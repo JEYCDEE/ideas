@@ -1,6 +1,5 @@
 '''
 @ Author  : Volodymyr Mon
-@ Email   : jeycdee[at]gmail[dot]com
 @ License : MIT
 @ Systems : Mac OS X / macOS, Linux, Windows not tested
 
