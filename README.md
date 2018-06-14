@@ -3,3 +3,10 @@
 
 Hope I can help someone someday.
 All my new ideas will be pushed here.
+
+- remove-ds-files.py:
+  - This little script can help you get rid of ._DS files on your macOS.
+
+- set-created-date-for-photos.py:
+  - This little script can help you orginize your photo library by reading file date create and setting it as a file name, like 20180614_224000.jpg
+
