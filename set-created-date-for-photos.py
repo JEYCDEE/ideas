@@ -1,3 +1,13 @@
+'''
+@ Author  : Volodymyr Mon
+@ License : MIT
+@ Systems : Mac OS X / macOS, Linux, Windows not tested
+This script let you select either one file or whole directory with
+images/photos, analyzie their creation/modification/acces date
+and rename one or all files with the timestamp. After all you
+should see something like 20180614_220000.jpg.
+'''
+
 from PIL import Image
 import os
 import sys
