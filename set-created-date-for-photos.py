@@ -31,6 +31,9 @@ SHOW_OPERATIONS = True
 # Error: file has not been renamed
 SHOW_STATUSES   = True
 
+# This is a list of system files, we would not want to rename.
+SYSTEM_FILES = ('.ini', '.sys', '.conf')
+
 # Retrieve either the date shot has been taken, or at least date
 # of it's modification or access. For example .png does not have
 # any exif data. If none of dates exist, return original name.
@@ -101,8 +104,13 @@ def renameFiles(path, filesList):
 
     for fileName in filesList:
 
-      thisFile = path + "/" + fileName
-      newFile  = path + "/" + getDateTaken(thisFile, fileName)
+      thisFile       = path + "/" + fileName
+      newFile        = path + "/" + getDateTaken(thisFile, fileName)
+      isSubDirectory = os.path.isdir(path + "/" + fileName)
+      fileExtension  = (os.path.splitext(path + "/" + fileName)[1]).lower()
+
+      if isSubDirectory is True: continue
+      if fileExtension in SYSTEM_FILES: continue
 
       os.rename(thisFile, newFile)
 
@@ -122,7 +130,7 @@ if argumentType == "file":
   renameFile(path, fileName)
 
 # Trigger directory function
-if argumentType == "directory" or argumentType == "folder":
+if argumentType == "directory" or argumentType == "folder" or argumentType == "dir":
   print("Directory mode selected... \n")
   filesList = os.listdir(argumentPath)
   renameFiles(argumentPath, filesList)
