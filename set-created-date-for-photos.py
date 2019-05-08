@@ -20,6 +20,7 @@ from PIL import Image
 import os
 import sys
 import datetime
+import time
 
 if len(sys.argv) <= 2:
   print("Not enough arguments")
@@ -61,6 +62,7 @@ def getDateTaken(path, oldName = ''):
 
     dateTaken = Image.open(path)._getexif()[DATE_CREATED]
     extension = (os.path.splitext(path)[1]).lower()
+
     result    = dateTaken.replace(" ", SEPARATOR)
     result    = result.replace(":", "") + extension
 
@@ -77,9 +79,9 @@ def getDateTaken(path, oldName = ''):
     if SHOW_EXCEPTIONS:
       print("Get Date Take exception: %s. Setting other Date" % str(e))
 
-    dateModified = os.stat(path).st_mtime
-    dateCreated  = os.stat(path).st_ctime
-    dateAccess   = os.stat(path).st_atime
+    dateCreated  = os.path.getmtime(path)
+    dateModified = os.path.getctime(path)
+    dateAccess   = os.path.getatime(path)
     extension    = (os.path.splitext(path)[1]).lower()
 
     if dateModified == None and dateCreated == None and dateAccess == None:
@@ -87,10 +89,10 @@ def getDateTaken(path, oldName = ''):
         print("Error: %s" % path)
       return oldName
 
-    if dateModified != None:
-      result = datetime.datetime.fromtimestamp(dateModified)
-    elif dateCreated != None:
+    if dateCreated != None:
       result = datetime.datetime.fromtimestamp(dateCreated)
+    elif dateModified != None:
+      result = datetime.datetime.fromtimestamp(dateModified)
     elif dateAccess != None:
       result = datetime.datetime.fromtimestamp(dateAccess)
 
