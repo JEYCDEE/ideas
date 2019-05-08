@@ -171,10 +171,10 @@ if argumentType == "file":
 if argumentType == "directory" or argumentType == "folder" or argumentType == "dir":
   print("Directory mode selected... \n")
 
-  filesList = os.listdir(argumentPath)
+  filesList    = os.listdir(argumentPath)
   newFilesList = analyzeApplePhotosLibrary(argumentPath, filesList)
-  print(newFilesList)
-#  renameFiles(argumentPath, filesList)
+
+  renameFiles(argumentPath, newFilesList)
 
 
 
