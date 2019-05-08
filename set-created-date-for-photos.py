@@ -140,15 +140,43 @@ def renameFiles(path, filesList):
     if SHOW_EXCEPTIONS:
       print("Rename Files excpetion: " + str(e))
 
+# Analyze files and remove duplicates. Apple Photos could contain duplicates if you 
+# edit photos, in this situation default shot is named like IMG_0001 and edited one
+# is look like IMG_0001(Edited). Remove default shot and leave edited one.
+def analyzeApplePhotosLibrary(path, filesList):
+
+  newFilesList = filesList
+
+  for file in filesList:
+    
+    fileData           = file.rsplit(".", 1)
+    possibleDuplicates = [fileData[0] + "(Edited)." + fileData[1], fileData[0] + " (Edited)." + fileData[1]]
+
+    if any(f in filesList for f in possibleDuplicates):
+      newFilesList.remove(file)
+      os.remove(path + "/" + file)
+
+  return newFilesList
+
 # Trigger file function
 if argumentType == "file":
   print("File mode selected... \n")
+
   path     = os.path.dirname(argumentPath)
   fileName = os.path.basename(argumentPath)
+
   renameFile(path, fileName)
 
 # Trigger directory function
 if argumentType == "directory" or argumentType == "folder" or argumentType == "dir":
   print("Directory mode selected... \n")
+
   filesList = os.listdir(argumentPath)
-  renameFiles(argumentPath, filesList)
+  newFilesList = analyzeApplePhotosLibrary(argumentPath, filesList)
+  print(newFilesList)
+#  renameFiles(argumentPath, filesList)
+
+
+
+
+
