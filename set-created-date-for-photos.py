@@ -194,15 +194,22 @@ if argumentType == "file":
 
   renameFile(path, fileName)
 
+  print("Done!")
+
 # Trigger directory function
 if argumentType == "directory" or argumentType == "folder" or argumentType == "dir":
-  print("Directory mode selected... \n")
+  print("\nDirectory mode selected... ")
+  print("All non-system files inside this directory will be renamed. ")
+  print("Press CTRL+C to cancel this operation. \n")
+
+  time.sleep(5)
 
   filesList    = getAllowedFilesOnly(argumentPath)
   newFilesList = analyzeApplePhotosLibrary(argumentPath, filesList)
 
   renameFiles(argumentPath, newFilesList)
 
+  print("Done!")
 
 
 
