@@ -1,7 +1,7 @@
 '''
 @ Author  : Volodymyr Mon
 @ License : MIT
-@ Systems : Mac OS X / macOS, Linux, Windows not tested
+@ Systems : Mac OS X / macOS, Linux, Windows under testing
 
 This script let you select either one file or whole directory with
 images/photos, analyzie their creation/modification/access date
@@ -51,7 +51,13 @@ SHOW_OPERATIONS = True
 SHOW_STATUSES   = True
 
 # This is a list of system files, we would not want to rename.
-SYSTEM_FILES = ('.ini', '.sys', '.conf')
+SYSTEM_FILES    = ('.ini', '.sys', '.conf')
+
+# OS specific directory separator.
+DS              = os.sep
+
+# A list of disallowed (e.g. system files.
+DENIED_FILES    = ["ini"]
 
 # Retrieve either the date shot has been taken, or at least date
 # of it's modification or access. For example .png does not have
@@ -106,8 +112,8 @@ def renameFile(path, fileName):
 
   try:
 
-    thisFile = path + "/" + fileName
-    newFile  = path + "/" + getDateTaken(thisFile, fileName)
+    thisFile = path + DS + fileName
+    newFile  = path + DS + getDateTaken(thisFile, fileName)
 
     os.rename(thisFile, newFile)
 
@@ -124,10 +130,10 @@ def renameFiles(path, filesList):
 
     for fileName in filesList:
 
-      thisFile       = path + "/" + fileName
-      newFile        = path + "/" + getDateTaken(thisFile, fileName)
-      isSubDirectory = os.path.isdir(path + "/" + fileName)
-      fileExtension  = (os.path.splitext(path + "/" + fileName)[1]).lower()
+      thisFile       = path + DS + fileName
+      newFile        = path + DS + getDateTaken(thisFile, fileName)
+      isSubDirectory = os.path.isdir(path + DS + fileName)
+      fileExtension  = (os.path.splitext(path + DS + fileName)[1]).lower()
 
       if isSubDirectory is True: continue
       if fileExtension in SYSTEM_FILES: continue
@@ -150,15 +156,34 @@ def analyzeApplePhotosLibrary(path, filesList):
   newFilesList = filesList
 
   for file in filesList:
-    
+
+    print file
+
     fileData           = file.rsplit(".", 1)
     possibleDuplicates = [fileData[0] + "(Edited)." + fileData[1], fileData[0] + " (Edited)." + fileData[1]]
 
     if any(f in filesList for f in possibleDuplicates):
       newFilesList.remove(file)
-      os.remove(path + "/" + file)
+      os.remove(path + DS + file)
 
   return newFilesList
+
+# Filter out all directories and system files and return only potential media type.
+def getAllowedFilesOnly(argumentPath):
+
+  allFiles     = os.listdir(argumentPath)
+  allowedFiles = []
+
+  for file in allFiles:
+
+    fileData  = file.rsplit(".", 1)
+    isDir     = os.path.isdir(os.path.join(argumentPath, file))
+    isAllowed = True if len(fileData) == 2 and fileData[1] not in DENIED_FILES else False
+
+    if not isDir and isAllowed:
+      allowedFiles.append(file)
+
+  return allowedFiles
 
 # Trigger file function
 if argumentType == "file":
@@ -173,7 +198,7 @@ if argumentType == "file":
 if argumentType == "directory" or argumentType == "folder" or argumentType == "dir":
   print("Directory mode selected... \n")
 
-  filesList    = os.listdir(argumentPath)
+  filesList    = getAllowedFilesOnly(argumentPath)
   newFilesList = analyzeApplePhotosLibrary(argumentPath, filesList)
 
   renameFiles(argumentPath, newFilesList)
