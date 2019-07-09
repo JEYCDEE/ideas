@@ -101,11 +101,3 @@ class PathExtender
 	}
 
 }
-
-$pathExtender = new PathExtender;
-
-$relativePath = './../www/index.php';
-$baseDir      = '/var/www';
-$absolutePath = $pathExtender->getAbsolutePath($relativePath, $baseDir);
-
-var_dump($absolutePath);
