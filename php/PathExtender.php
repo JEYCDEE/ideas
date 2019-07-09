@@ -98,6 +98,7 @@ class PathExtender
 			$relativePath = '.' . self::DS . $relativePath;
 
 		}
+
 	}
 
 }
