@@ -132,4 +132,11 @@ $pipedrive = new App\PipedriveManager('YourPipedriveTokenShouldGoHere');
  *
  */
 
-var_dump($pipedrive->getDeals());
+try {
+
+    var_dump($pipedrive->getDeals());
+
+} catch (\Exception $e) {
+
+
+}

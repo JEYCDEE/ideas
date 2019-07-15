@@ -5,6 +5,7 @@
  *
  * @author  : Volodymyr Mon
  * @license : MIT
+ * @version : Beta (1.0)
  */
 
 namespace App;
