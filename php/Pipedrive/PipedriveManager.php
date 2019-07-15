@@ -1,6 +1,6 @@
 <?php
 /**
- * This base class aims to help you with PipedriveManager communication.
+ * This base class aims to help you with Pipedrive API communication.
  * https://www.pipedrive.com
  *
  * @author  : Volodymyr Mon
